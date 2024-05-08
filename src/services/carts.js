@@ -2,7 +2,7 @@ import { cartModel } from "../dao/models/carts.js";
 
 export const getCartsByIdService = async (cid) => {
     try{
-        return await cartModel.findById(cid);
+        return await cartModel.findById(cid).populate('products.id').lean();
     } catch (error) {
         console.log('getCartsByIdService -> ', error);
         throw error;
@@ -33,6 +33,37 @@ export const addProductInCartService = async (cid, pid)=> {
             return carrito;
     } catch (error) {
         console.log('addProductInCartService -> ', error);
+        throw error;
+    }
+}
+
+export const deleteProductsInCartService = async (cid, pid)=> {
+    try {
+        return await cartModel.findByIdAndUpdate(cid,{$pull:{'products':{id:pid}}},{new:true});
+    } catch (error) {
+        console.log('deleteProductsInCartService -> ', error);
+        throw error;
+    }
+}
+
+export const updateProductsInCartService = async (cid, pid, quantity)=> {
+    try {
+        return await cartModel.findOneAndUpdate(
+            { _id: cid, 'products.id':pid },
+            { $set: { 'products.$.quantity':quantity } },
+            { new: true }
+        )
+    } catch (error) {
+        console.log('deleteProductsInCartService -> ', error);
+        throw error;
+    }
+}
+
+export const deleteCartService = async (cid)=> {
+    try {
+        return await cartModel.findByIdAndUpdate(cid,{$set:{'products':[]}},{new:true});
+    } catch (error) {
+        console.log('deleteProductsInCartService -> ', error);
         throw error;
     }
 }

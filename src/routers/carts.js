@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addProductInCart, createCart, getCartsById } from '../dao/cartsDB.js';
+import { addProductInCart, createCart, deleteCart, deleteProductsInCart, getCartsById, updateProductsInCart } from '../dao/cartsDB.js';
 
 
 const router = Router();
@@ -7,5 +7,8 @@ const router = Router();
 router.get('/:cid', getCartsById);
 router.post('/', createCart);
 router.post('/:cid/product/:pid', addProductInCart);
+router.delete('/:cid/products/:pid', deleteProductsInCart);
+router.put('/:cid/products/:pid', updateProductsInCart);
+router.delete('/:cid', deleteCart);
 
 export default router;

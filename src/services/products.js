@@ -32,6 +32,7 @@ export const getProductsService = async ({limit = 10, page = 1, sort, query}) =>
             totalDocs,
             page,
             limit,
+            query:JSON.stringify(query),
             totalPages,
             hastPrePage,
             hastNextPage,
