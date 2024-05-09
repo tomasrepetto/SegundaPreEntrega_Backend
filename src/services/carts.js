@@ -67,3 +67,18 @@ export const deleteCartService = async (cid)=> {
         throw error;
     }
 }
+
+export const updateCartService = async (cid, products) => {
+    try {
+        const carrito = await cartModel.findById(cid);
+        if (!carrito) {
+            return null;
+        }
+            carrito.products = products; 
+            await carrito.save();
+            return carrito;
+        } catch (error) {
+            console.error('Error al actualizar el carrito:', error.message);
+            throw error;
+        }
+}

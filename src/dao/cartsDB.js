@@ -1,5 +1,5 @@
 import { request, response } from 'express';
-import { addProductInCartService, createCartService, deleteCartService, deleteProductsInCartService, getCartsByIdService, updateProductsInCartService } from '../services/carts.js';
+import { addProductInCartService, createCartService, deleteCartService, deleteProductsInCartService, getCartsByIdService, updateCartService, updateProductsInCartService } from '../services/carts.js';
 
 export const getCartsById = async (req=request, res=response) => {
     try{
@@ -73,3 +73,19 @@ export const deleteCart = async (req=request, res=response)=> {
         return response.status(500).json({msg: 'Hablar con un administrador'});
     }
 }
+
+export const updateCart = async (req, res) => {
+    try {
+        const cid = req.params.cid;
+        const products = req.body;
+        const carrito = await updateCartService(cid, products);
+        if (!carrito) {
+            return res.status(404).json({ msg: 'Carrito no encontrado' });
+        }
+
+        return res.status(200).json({ msg: 'Carrito actualizado', cart: updatedCart });
+        } catch (error) {
+        console.error('Error inesperado:', error.message);
+        return res.status(500).json({ msg: 'Error interno del servidor' });
+        }
+};
